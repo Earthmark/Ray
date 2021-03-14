@@ -1,5 +1,5 @@
 [package]
-name = "Ray"
+name = "ray"
 version = "0.1.0"
 authors = ["Daniel Miller (Earthmark) <earthmark.miller@gmail.com>"]
 edition = "2018"
@@ -9,3 +9,12 @@ edition = "2018"
 [dependencies]
 glam = "*"
 png = "*"
+log = "*"
+log4rs = "*"
+
+[dev-dependencies]
+criterion = "*"
+
+[[bench]]
+name = "target"
+harness = false
