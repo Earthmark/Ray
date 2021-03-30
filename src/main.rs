@@ -2,13 +2,15 @@ mod logdur;
 mod range;
 pub mod target;
 mod writer;
+mod ray;
+mod shapes;
 
 use std::path::Path;
 
 use glam::{UVec2, Vec3};
 use log::info;
 use logdur::ChroMark;
-use ray::target::ImageTarget;
+use target::ImageTarget;
 
 fn main() {
     log4rs::init_file("log_config.yml", Default::default()).unwrap();
@@ -25,7 +27,7 @@ fn main() {
         if let Some(pixel) = target.get_mut(index) {
             let pos = Vec3::new(index.x as f32 / 1024.0 - 0.5, index.y as f32 / 1024.0 - 0.5, 0.0);
 
-            *pixel = if pos.length() < 0.1 { Vec3::new(1.0, 1.0, 1.0) } else { Vec3::ZERO };
+            *pixel = Vec3::new(1.0, 1.0, 1.0) / (pos.length() + 1.0);
         }
     }
 

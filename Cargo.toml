@@ -1,5 +1,5 @@
 [package]
-name = "ray"
+name = "tracer"
 version = "0.1.0"
 authors = ["Daniel Miller (Earthmark) <earthmark.miller@gmail.com>"]
 edition = "2018"

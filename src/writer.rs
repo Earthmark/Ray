@@ -1,6 +1,6 @@
 use crate::range::range;
 use glam::Vec3;
-use ray::target::ImageTarget;
+use crate::target::ImageTarget;
 use std::{io::BufWriter, iter::FromIterator};
 
 fn f_to_b(f: f32) -> u8 {
@@ -18,7 +18,7 @@ pub fn write_target(target: &ImageTarget<Vec3>, path: &std::path::Path) -> std::
             })
             .flatten(),
     );
-
+    
     let file = std::fs::File::create(path)?;
     let ref mut writer = BufWriter::new(file);
     let mut encoder = png::Encoder::new(writer, dims.x, dims.y);

@@ -45,23 +45,23 @@ impl<PixelFormat: Clone> ImageTarget<PixelFormat> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use glam::Vec3;
+    use glam::{vec3, Vec3, uvec2};
     use crate::range::range;
 
     #[test]
     fn test_allocates_fixed() {
-        let dims = UVec2::new(1024, 1024);
-        let mut target = ImageTarget::new(dims, Vec3::new(0.0, 0.0, 0.0));
+        let dims = uvec2(1024, 1024);
+        let mut target = ImageTarget::new(dims, Vec3::ZERO);
         assert_eq!(target.dims(), dims);
         for x in 0..1024 {
             for y in 0..1024 {
                 assert_eq!(
-                    target.get(UVec2::new(x, y)),
-                    Some(&Vec3::new(0.0, 0.0, 0.0))
+                    target.get(uvec2(x, y)),
+                    Some(&Vec3::ZERO)
                 );
                 assert_eq!(
-                    target.get_mut(UVec2::new(x, y)),
-                    Some(&mut Vec3::new(0.0, 0.0, 0.0))
+                    target.get_mut(uvec2(x, y)),
+                    Some(&mut Vec3::splat(0.0))
                 );
             }
         }
@@ -69,22 +69,22 @@ mod tests {
 
     #[test]
     fn test_index_setter() {
-        let dims = UVec2::new(1024, 1024);
-        let mut target = ImageTarget::new(dims, Vec3::new(0.0, 0.0, 0.0));
-        for index in range(UVec2::new(1024, 1024)) {
+        let dims = uvec2(1024, 1024);
+        let mut target = ImageTarget::new(dims, Vec3::ZERO);
+        for index in range(dims) {
             if let Some(pixel) = target.get_mut(index) {
-                *pixel = Vec3::new(index.x as f32, index.y as f32, 0.0);
+                *pixel = index.as_f32().extend(0.0);
             }
         }
         for x in 0..1024 {
             for y in 0..1024 {
                 assert_eq!(
-                    target.get(UVec2::new(x, y)),
-                    Some(&Vec3::new(x as f32, y as f32, 0.0))
+                    target.get(uvec2(x, y)),
+                    Some(&vec3(x as f32, y as f32, 0.0))
                 );
                 assert_eq!(
-                    target.get_mut(UVec2::new(x, y)),
-                    Some(&mut Vec3::new(x as f32, y as f32, 0.0))
+                    target.get_mut(uvec2(x, y)),
+                    Some(&mut vec3(x as f32, y as f32, 0.0))
                 );
             }
         }
